@@ -1,2 +1,0 @@
-
-pair_confusion_matrix(model
