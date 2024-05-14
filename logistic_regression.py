@@ -1,12 +1,13 @@
-import pandas as pd
-import numpy as np
-import random
-import math
-import matplotlib.pyplot as plt
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.model_selection import cross_val_score
 from sklearn.metrics import confusion_matrix
+from sklearn.model_selection import cross_val_score
+from sklearn.linear_model import LogisticRegression
+from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
+import math
+import random
+import numpy as np
+import pandas as pd
+from sklearn.metrics import pair_confusion_matrix
 
 
 train_data_file = "dataset/train.csv"
@@ -58,8 +59,13 @@ Y = data['Survived']
 X_train, x_test, Y_train, y_test = train_test_split(
     X, Y, test_size=0.25, random_state=16)
 
+# print(X_train.head(10))
+# print(Y_train.head(10))
+# print(x_test.head(5))
+# print(Y_train.head(5))
+
 # init model
-model = LogisticRegression(random_state=16)
+model = LogisticRegression(random_state=16, penalty=None, max_iter=100)
 
 # fitting model
 model.fit(X_train, Y_train)
@@ -70,7 +76,8 @@ y_pred = model.predict(x_test)
 score = model.score(x_test, y_test)
 print(cross_val_score(model, X, Y, cv=5).mean())
 
+y_predicted = model.predict(x_test)
+confusion_matrix(y_test, y_predicted)
 
-def initialize_theta(dim):
-    theta = np.random.rand(dim)
-    return theta
+pair_confusion_matrix(model, x_test, y_test, display_labels=[
+    'Perished', 'Survived'], cmap='Blues', xticks_rotation='vertical')
