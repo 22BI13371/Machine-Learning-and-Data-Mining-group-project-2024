@@ -571,4 +571,3 @@ submission.Survived = submission.Survived.astype(int)
 
 submission.to_csv("titanic1_submission.csv", index=False)
 
-test.to_csv("temp.csv", index=False)
