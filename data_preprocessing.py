@@ -22,6 +22,7 @@ from sklearn.metrics import roc_curve, auc
 from sklearn.metrics import precision_recall_curve
 from sklearn.model_selection import StratifiedShuffleSplit, cross_val_score
 from sklearn.model_selection import GridSearchCV, StratifiedKFold
+from sklearn.linear_model import SGDClassifier
 
 
 train_file = "dataset/train.csv"
@@ -391,10 +392,13 @@ test = st_scale.transform(test)
 
 
 # call on the model object
-logreg = LogisticRegression(solver='lbfgs', penalty=None, random_state=42)
+# logreg = LogisticRegression(solver='lbfgs', penalty=None, random_state=42)
+logreg = SGDClassifier(loss='log_loss', penalty=None, alpha=0.0, max_iter=50000, tol=None,
+                       random_state=42, learning_rate='invscaling', eta0=0.001, shuffle=True, early_stopping=False)
 
 # fit the model with "train_x" and "train_y"
 logreg.fit(X_train, y_train)
+# logreg.fit(X, y)
 
 # Once the model is trained we want to find out how well the model is performing, so we test the model.
 # we use "X_test" portion of the data(this data was not used to fit the model) to predict model outcome.
@@ -405,10 +409,15 @@ y_pred = logreg.predict(X_test)
 # Then we compare the predicted value( "y_pred") and actual value("test_y") to see how well our model is performing.
 
 
-accuracy_score(y_test, y_pred)
-recall_score(y_test, y_pred)
-precision_score(y_test, y_pred)
+accuracy = accuracy_score(y_test, y_pred)
+recall = recall_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred)
+specificity = specificity_score
+
+# print sumarized classification report
 print(classification_report(y_test, y_pred))
+print(logreg.score(X_test, y_test))
+# print("Accuracy: ", accuracy, "\nRecall: ", recall, "\nPrecision: ", precision)
 
 
 def plot_confusion_matrix(y_true, y_pred, classes,
@@ -470,14 +479,14 @@ np.set_printoptions(precision=2)
 class_names = np.array(['not_survived', 'survived'])
 
 # Plot non-normalized confusion matrix
-# plot_confusion_matrix(y_test, y_pred, classes=class_names,
-#                       title='Confusion matrix, without normalization')
+plot_confusion_matrix(y_test, y_pred, classes=class_names,
+                      title='Confusion matrix, without normalization')
 
 # Plot normalized confusion matrix
-# plot_confusion_matrix(y_test, y_pred, classes=class_names, normalize=True,
-#                       title='Normalized confusion matrix')
+plot_confusion_matrix(y_test, y_pred, classes=class_names, normalize=True,
+                      title='Normalized confusion matrix')
 
-# plt.show()
+plt.show()
 
 
 """ ROC for Titanic survivors """
@@ -485,8 +494,8 @@ class_names = np.array(['not_survived', 'survived'])
 # plt.style.use('seaborn-pastel')
 y_score = logreg.decision_function(X_test)
 
-FPR, TPR, _ = roc_curve(y_test, y_score)
-ROC_AUC = auc(FPR, TPR)
+# FPR, TPR, _ = roc_curve(y_test, y_score)
+# ROC_AUC = auc(FPR, TPR)
 # print(ROC_AUC)
 
 # plt.figure(figsize=[11, 9])
@@ -570,4 +579,3 @@ submission.PassengerId = submission.PassengerId.astype(int)
 submission.Survived = submission.Survived.astype(int)
 
 submission.to_csv("titanic1_submission.csv", index=False)
-
