@@ -412,7 +412,6 @@ y_pred = logreg.predict(X_test)
 accuracy = accuracy_score(y_test, y_pred)
 recall = recall_score(y_test, y_pred)
 precision = precision_score(y_test, y_pred)
-specificity = specificity_score
 
 # print sumarized classification report
 print(classification_report(y_test, y_pred))
