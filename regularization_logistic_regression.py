@@ -53,6 +53,8 @@ output = pd.DataFrame({'PassengerId': test_data.PassengerId, 'Survived': predict
 output.to_csv('submission.csv', index=False)
 print("Your submission was successfully saved!")
 
+
+
 # # # Distribution of Survival
 # # plt.figure(figsize=(8, 4))
 # # sns.countplot(x='Survived', data=train_data)
