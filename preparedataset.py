@@ -1,4 +1,4 @@
-# Made by Lê Huy Phú
+# Made by Luong Ngoc Phuc
 
 import pandas as pd
 from sklearn.model_selection import train_test_split
