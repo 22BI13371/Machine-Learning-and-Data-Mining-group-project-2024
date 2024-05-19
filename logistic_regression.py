@@ -1,6 +1,7 @@
 """Made with referenced to  "A Statistical Analysis & ML workflow of Titanic" By MASUM RUMI 
 https://www.kaggle.com/code/masumrumi/a-statistical-analysis-ml-workflow-of-titanic/notebook#Part-8:-Submit-test-predictions"""
 
+# Created by Nguyen Dam Quan
 
 import pandas as pd
 import numpy as np
